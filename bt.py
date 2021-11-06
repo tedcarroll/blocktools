@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import pathlib
 import sys
 import tempfile
 from textwrap import dedent
@@ -71,6 +72,15 @@ class ProjectFile:
 
                     with ZipFile(tmp_project_name, 'a') as zf:
                         zf.write(tmp_inner_name, INNER_ZIP_NAME)
+
+        os.unlink(tmp_inner_name)
+        original_path = pathlib.Path(self.project_file_name)
+        newfile_name = "new_" + original_path.name
+        new_path = original_path.with_name(newfile_name)
+        if new_path.exists():
+            new_path.unlink()
+
+        os.rename(tmp_project_name, new_path)
 
 
 class ProjectCode:
