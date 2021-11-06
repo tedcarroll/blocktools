@@ -7,6 +7,8 @@ import tempfile
 from textwrap import dedent
 from zipfile import ZipFile, ZIP_DEFLATED
 
+NEW_PREFIX = 'new_'
+
 PROJECT_JSON_NAME = 'project.json'
 INNER_ZIP_NAME = 'scratch.sb3'
 
@@ -75,7 +77,7 @@ class ProjectFile:
 
         os.unlink(tmp_inner_name)
         original_path = pathlib.Path(self.project_file_name)
-        newfile_name = "new_" + original_path.name
+        newfile_name = NEW_PREFIX + original_path.name
         new_path = original_path.with_name(newfile_name)
         if new_path.exists():
             new_path.unlink()
@@ -208,7 +210,7 @@ def copy_my_blocks_main(args):
 
 
 if __name__ == '__main__':
-    if not sys.argv:
+    if not len(sys.argv) > 1:
         print(dedent(MISSING_COMMAND_HELP))
     else:
         command = sys.argv[1]
